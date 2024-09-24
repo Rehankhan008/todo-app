@@ -62,7 +62,8 @@ jobs:
         run: |
           git config --global user.email "rehanrocks555@outlook.com"
           git config --global user.name "rehankhan008"
-          git add k8s/backend-deploy.yml /frontent-deploy.yml
+          git add k8s/backend-deploy.yml
+          git add k8s/frontend-deploy.yml
           git commit -m "Update tag "
           git push
 
