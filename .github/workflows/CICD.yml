@@ -16,9 +16,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set PowerShell Execution Policy for the Session
-        run: |
-          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+   #   - name: Set PowerShell Execution Policy for the Session
+   #     run: |
+   #       Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -47,12 +47,13 @@ jobs:
       - name: Update Backend Deployment File
         run: |
           $newTagBackend = '${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.run_id }}'
-          (Get-Content backend-deploy.yml) -replace 'image: .*', "image: $newTagBackend" | Set-Content backend-deploy.yml
+          (Get-Content k8s/backend-deploy.yml) -replace 'image: .*', "image: $newTagBackend" | Set-Content k8s/backend-deploy.yml
+
 
       - name: Update Frontend Deployment File
         run: |
           $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
-          (Get-Content frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content frontend-deploy.yml
+          (Get-Content k8s/frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content k8s/frontend-deploy.yml
 
 
 
