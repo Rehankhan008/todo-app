@@ -28,7 +28,7 @@ jobs:
           context: .
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backent:${{github.run_id}}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:${{github.run_id}}
 
 
       - name: Build and Push action
@@ -38,4 +38,27 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{github.run_id}}
+
+
+      - name: Update Backend Deployment File
+        run: |
+          $newTagBackend = '${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.run_id }}'
+          (Get-Content backend-deploy.yml) -replace 'image: .*', "image: $newTagBackend" | Set-Content backend-deploy.yml
+
+      - name: Update Frontend Deployment File
+        run: |
+          $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
+          (Get-Content frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content frontend-deploy.yml
+
+
+
+      - name: Deploy Backend to Kubernetes
+        run: |
+          kubectl apply -f backend-deploy.yml
+          kubectl apply -f backend-svc.yml
+
+      - name: Deploy Frontend to Kubernetes
+        run: |
+          kubectl apply -f frontend-deploy.yml
+          kubectl apply -f frontend-svc.yml
 
