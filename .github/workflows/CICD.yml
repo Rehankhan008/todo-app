@@ -48,16 +48,16 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{github.run_id}}
 
 
-      - name: Update Backend Deployment File
-        run: |
-          $newTagBackend = '${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.run_id }}'
-          (Get-Content k8s/backend-deploy.yml) -replace 'image: .*', "image: $newTagBackend" | Set-Content k8s/backend-deploy.yml
+  #    - name: Update Backend Deployment File
+  #      run: |
+   #       $newTagBackend = '${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.run_id }}'
+   #       (Get-Content k8s/backend-deploy.yml) -replace 'image: .*', "image: $newTagBackend" | Set-Content k8s/backend-deploy.yml
 
 
-      - name: Update Frontend Deployment File
-        run: |
-          $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
-          (Get-Content k8s/frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content k8s/frontend-deploy.yml
+  #    - name: Update Frontend Deployment File
+  #      run: |
+  #        $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
+  #        (Get-Content k8s/frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content k8s/frontend-deploy.yml
  #     - name: Commit and push changes
  #       run: |
  #         git config --global user.email "rehanrocks555@outlook.com"
@@ -77,4 +77,11 @@ jobs:
         run: |
           kubectl apply -f k8s/frontend-deploy.yml
           kubectl apply -f k8s/frontend-svc.yml
+
+      - name: Deploy database 
+        run: |
+          kubectl apply -f k8s/mongo-deploy.yml 
+          kubectl apply -f k8s/mongo-svc.yml
+          kubectl apply -f k8s/secrets.yml
+
 
