@@ -15,5 +15,9 @@ spec:
       containers:
       - name: frontend
         image: rehan008/frontend:v1
+        imagePullPolicy: Always
+        env:
+          - name: REACT_APP_BACKEND_URL
+            value: "http://localhost:3001/api"
         ports:
         - containerPort: 3000
