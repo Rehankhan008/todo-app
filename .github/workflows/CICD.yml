@@ -54,10 +54,10 @@ jobs:
           (Get-Content k8s/backend-deploy.yml) -replace 'image: .*', "image: $newTagBackend" | Set-Content k8s/backend-deploy.yml
 
 
-  #    - name: Update Frontend Deployment File
-  #      run: |
-  #        $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
-  #        (Get-Content k8s/frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content k8s/frontend-deploy.yml
+      - name: Update Frontend Deployment File
+        run: |
+          $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
+          (Get-Content k8s/frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content k8s/frontend-deploy.yml
  #     - name: Commit and push changes
  #       run: |
  #         git config --global user.email "rehanrocks555@outlook.com"
