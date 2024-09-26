@@ -7,7 +7,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
 
     runs-on: self-hosted
@@ -15,14 +14,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-         token: ${{ secrets.TOKEN }}
-
-        
-
-   #   - name: Set PowerShell Execution Policy for the Session
-   #     run: |
-   #       Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -50,38 +41,22 @@ jobs:
 
   #    - name: Update Backend Deployment File
   #      run: |
-   #       $newTagBackend = '${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.run_id }}'
-   #       (Get-Content k8s/backend-deploy.yml) -replace 'image: .*', "image: $newTagBackend" | Set-Content k8s/backend-deploy.yml
+  #        $newTagBackend = '${{ secrets.DOCKERHUB_USERNAME }}/backend:${{ github.run_id }}'
+  #        (Get-Content k8s/backend-deploy.yml) -replace 'image: .*', "image: $newTagBackend" | Set-Content k8s/backend-deploy.yml
 
 
-  #    - name: Update Frontend Deployment File
-  #      run: |
-  #        $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
-  #        (Get-Content k8s/frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content k8s/frontend-deploy.yml
- #     - name: Commit and push changes
- #       run: |
- #         git config --global user.email "rehanrocks555@outlook.com"
- #         git config --global user.name "rehankhan008"
- #         git add k8s/backend-deploy.yml
- #         git add k8s/frontend-deploy.yml
- #         git commit -m "Update tag "
-  #        git push
+   #   - name: Update Frontend Deployment File
+   #     run: |
+   #       $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
+   #       (Get-Content k8s/frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content k8s/frontend-deploy.yml
 
-
-      - name: Deploy Backend to Kubernetes
+      - name: Deploy on Kubernetes
         run: |
           kubectl apply -f k8s/backend-deploy.yml
           kubectl apply -f k8s/backend-svc.yml
-
-      - name: Deploy Frontend to Kubernetes
-        run: |
           kubectl apply -f k8s/frontend-deploy.yml
           kubectl apply -f k8s/frontend-svc.yml
-
-      - name: Deploy database 
-        run: |
           kubectl apply -f k8s/mongo-deploy.yml 
           kubectl apply -f k8s/mongo-svc.yml
           kubectl apply -f k8s/secrets.yml
-
-
+          kubectl apply -f ingress.yml
