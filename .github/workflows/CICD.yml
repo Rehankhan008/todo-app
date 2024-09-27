@@ -60,3 +60,8 @@ jobs:
           kubectl apply -f k8s/mongo-svc.yml
           kubectl apply -f k8s/secrets.yml
           kubectl apply -f ingress.yml
+          kubectl apply -f monitoring/grafana-deployment.yaml
+          kubectl apply -f monitoring/prometheus-config.yaml
+          kubectl apply -f monitoring/prometheus-deployment.yaml
+          kubectl create secret generic grafana-secret --from-literal=admin-password=  ${{ secrets.PASS }} -n monitoring
+          
