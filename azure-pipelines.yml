@@ -3,27 +3,28 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+- main  # Adjust branch name as needed
 
 resources:
-- repo: self
+- repo: self  # Refers to the current repository
 
 variables:
-  tag: '$(Build.BuildId)'
+  imageName: '$(Build.Repository.Name)'  # Use repository name as the image name
+  tag: '$(Build.BuildId)'  # Tag the image with Build ID
 
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: 'Build Docker Image'
   jobs:
-  - job: Build
-    displayName: Build
+  - job: BuildDockerImage
+    displayName: 'Build Docker Image Job'
     pool:
-      name: 'default'  # Replace with the name of your self-hosted agent pool
+      vmImage: 'ubuntu-latest'  # You can use a self-hosted agent if desired
     steps:
     - task: Docker@2
-      displayName: Build an image
+      displayName: 'Build Docker Image'
       inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/backend/Dockerfile'
+        command: 'build'
+        dockerfile: '$frontend/Dockerfile'  # Path to the Dockerfile
         tags: |
-          $(tag)
+          $(frontend):$(v1)  # Tag the image with the repository name and Build ID
