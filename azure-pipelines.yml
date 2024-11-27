@@ -19,12 +19,13 @@ stages:
   - job: BuildDockerImage
     displayName: 'Build Docker Image Job'
     pool:
-      name : 'default'  # You can use a self-hosted agent if desired
+      name: 'default'  # You can use a self-hosted agent if desired
     steps:
     - task: Docker@2
       displayName: 'Build Docker Image'
       inputs:
         command: 'build'
-        dockerfile: '$(Build.SourcesDirectory)frontend/Dockerfile'  # Path to the Dockerfile
+        dockerfile: '$(Build.SourcesDirectory)/frontend/Dockerfile'  # Path to the Dockerfile
         tags: |
           $(frontend):$(v1)  # Tag the image with the repository name and Build ID
+
