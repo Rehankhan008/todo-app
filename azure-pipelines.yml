@@ -28,8 +28,8 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/frontend/Dockerfile'  # Path to the Dockerfile
         tags: |
           $(frontend):$(v1)  # Tag the image with the repository name and Build ID
-          - script: |
-              echo "Running the Docker image..."
-              docker run -d -p 3000:3000 $(imageName):$(tag)
-              displayName: 'Run Docker Image'
+    - script: |
+        echo "Running the Docker image..."
+        docker run -d -p 3000:3000 $(imageName):$(tag)
+        displayName: 'Run Docker Image'
 
