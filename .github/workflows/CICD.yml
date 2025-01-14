@@ -49,9 +49,9 @@ jobs:
    #     run: |
    #       $newTagFrontend = '${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.run_id }}'
    #       (Get-Content k8s/frontend-deploy.yml) -replace 'image: .*', "image: $newTagFrontend" | Set-Content k8s/frontend-deploy.yml
-  #    - name: Create Grafana Secret
-   #     run: |
-   #         kubectl create secret generic grafana-secret --from-literal=admin-password=${{ secrets.PASS }} -n monitoring
+      - name: Create Grafana Secret
+        run: |
+            kubectl create secret generic grafana-secret --from-literal=admin-password=${{ secrets.PASS }} -n monitoring
 
       - name: Deploy on Kubernetes
         run: |
